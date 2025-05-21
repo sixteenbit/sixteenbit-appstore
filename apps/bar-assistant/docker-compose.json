@@ -1,0 +1,79 @@
+{
+  "services": [
+    {
+      "name": "bar-assistant",
+      "image": "barassistant/server:v5",
+      "isMain": true,
+      "environment": {
+        "APP_URL": "$API_URL",
+        "MEILISEARCH_KEY": "$MEILI_MASTER_KEY",
+        "MEILISEARCH_HOST": "http://meilisearch:7700",
+        "REDIS_HOST": "redis",
+        "CACHE_DRIVER": "redis",
+        "SESSION_DRIVER": "redis",
+        "ALLOW_REGISTRATION": "true",
+        "BASE_URL": "$API_URL",
+        "MEILISEARCH_URL": "$MEILISEARCH_URL",
+        "API_URL": "$API_URL"
+      },
+      "internalPort": 8080,
+      "volumes": [
+        {
+          "hostPath": "${APP_DATA_DIR}/bar_data",
+          "containerPath": "/var/www/cocktails/storage/bar-assistant",
+          "readOnly": false,
+          "shared": false,
+          "private": false
+        }
+      ],
+      "dependsOn": {
+        "meilisearch": {
+          "condition": "service_started"
+        },
+        "redis": {
+          "condition": "service_started"
+        }
+      }
+    },
+    {
+      "name": "salt-rim",
+      "image": "barassistant/salt-rim:v4",
+      "environment": {
+        "API_URL": "$API_URL",
+        "MEILISEARCH_URL": "$MEILISEARCH_URL"
+      },
+      "dependsOn": {
+        "bar-assistant": {
+          "condition": "service_started"
+        }
+      }
+    },
+    {
+      "name": "meilisearch",
+      "image": "getmeili/meilisearch:v1.12",
+      "internalPort": 7700,
+      "environment": {
+        "MEILI_NO_ANALYTICS": "true",
+        "MEILI_MASTER_KEY": "$MEILI_MASTER_KEY",
+        "MEILI_ENV": "production"
+      },
+      "volumes": [
+        {
+          "hostPath": "${APP_DATA_DIR}/meilisearch_data",
+          "containerPath": "/meili_data",
+          "readOnly": false,
+          "shared": false,
+          "private": false
+        }
+      ]
+    },
+    {
+      "name": "redis",
+      "image": "redis",
+      "environment": {
+        "ALLOW_EMPTY_PASSWORD": "yes"
+      }
+    }
+  ]
+}
+

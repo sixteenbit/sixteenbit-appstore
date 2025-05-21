@@ -1,0 +1,28 @@
+{
+  "$schema": "../app-info-schema.json",
+  "name": "Bar Assistant",
+  "available": true,
+  "exposable": true,
+  "dynamic_config": true,
+  "port": 8080,
+  "id": "bar-assistant",
+  "tipi_version": 2,
+  "version": "v5.4.1",
+  "categories": ["utilities", "data"],
+  "description": "Bar Assistant is an all-in-one solution for managing your home bar. It’s designed specifically for cocktail recipes, offering features like ingredient substitutes, ABV calculations, and more.",
+  "short_desc": "Cocktail recipe manager and home bar assistant.",
+  "author": "karlomikus",
+  "website": "https://barassistant.app",
+  "source": "https://github.com/karlomikus/bar-assistant",
+  "form_fields": [
+    {
+      "type": "random",
+      "label": "MEILI_MASTER_KEY",
+      "min": 16,
+      "env_variable": "MEILI_MASTER_KEY"
+    }
+  ],
+  "supported_architectures": ["arm64", "amd64"],
+  "created_at": 1745082405284,
+  "updated_at": 1745674974072
+}
