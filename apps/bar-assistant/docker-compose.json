@@ -20,7 +20,7 @@
       "internalPort": 8080,
       "volumes": [
         {
-          "hostPath": "${ROOT_FOLDER_HOST}/bar_data",
+          "hostPath": "${ROOT_FOLDER_HOST}/media/data/bar_data",
           "containerPath": "/var/www/cocktails/storage/bar-assistant",
           "readOnly": false,
           "shared": false,
@@ -60,7 +60,7 @@
       },
       "volumes": [
         {
-          "hostPath": "${ROOT_FOLDER_HOST}/meilisearch_data",
+          "hostPath": "${ROOT_FOLDER_HOST}/media/data/meilisearch_data",
           "containerPath": "/meili_data",
           "readOnly": false,
           "shared": false,
