@@ -2,11 +2,33 @@
   "$schema": "../dynamic-compose-schema.json",
   "services": [
     {
+      "name": "meilisearch",
+      "image": "getmeili/meilisearch:v1.12",
+      "internalPort": 7700,
+      "environment": {
+        "MEILI_NO_ANALYTICS": "true",
+        "MEILI_MASTER_KEY": "$MEILI_MASTER_KEY",
+        "MEILI_ENV": "production"
+      },
+      "volumes": [
+        {
+          "hostPath": "${ROOT_FOLDER_HOST}/data/meilisearch_data",
+          "containerPath": "/meili_data"
+        }
+      ]
+    },
+    {
+      "name": "redis",
+      "image": "redis",
+      "environment": {
+        "ALLOW_EMPTY_PASSWORD": "yes"
+      }
+    },
+    {
       "name": "bar-assistant",
       "image": "barassistant/server:v5",
       "isMain": true,
       "environment": {
-        "APP_URL": "$API_URL",
         "MEILISEARCH_KEY": "$MEILI_MASTER_KEY",
         "MEILISEARCH_HOST": "http://meilisearch:7700",
         "REDIS_HOST": "redis",
@@ -21,20 +43,13 @@
       "volumes": [
         {
           "hostPath": "${ROOT_FOLDER_HOST}/media/data/bar_data",
-          "containerPath": "/var/www/cocktails/storage/bar-assistant",
-          "readOnly": false,
-          "shared": false,
-          "private": false
+          "containerPath": "/var/www/cocktails/storage/bar-assistant"
         }
       ],
-      "dependsOn": {
-        "meilisearch": {
-          "condition": "service_started"
-        },
-        "redis": {
-          "condition": "service_started"
-        }
-      }
+      "dependsOn": [
+        "redis",
+        "meilisearch"
+      ]
     },
     {
       "name": "salt-rim",
@@ -43,37 +58,9 @@
         "API_URL": "$API_URL",
         "MEILISEARCH_URL": "$MEILISEARCH_URL"
       },
-      "dependsOn": {
-        "bar-assistant": {
-          "condition": "service_started"
-        }
-      }
-    },
-    {
-      "name": "meilisearch",
-      "image": "getmeili/meilisearch:v1.12",
-      "internalPort": 7700,
-      "environment": {
-        "MEILI_NO_ANALYTICS": "true",
-        "MEILI_MASTER_KEY": "$MEILI_MASTER_KEY",
-        "MEILI_ENV": "production"
-      },
-      "volumes": [
-        {
-          "hostPath": "${ROOT_FOLDER_HOST}/media/data/meilisearch_data",
-          "containerPath": "/meili_data",
-          "readOnly": false,
-          "shared": false,
-          "private": false
-        }
+      "dependsOn": [
+        "bar-assistant"
       ]
-    },
-    {
-      "name": "redis",
-      "image": "redis",
-      "environment": {
-        "ALLOW_EMPTY_PASSWORD": "yes"
-      }
     }
   ]
 }
