@@ -2,7 +2,7 @@
   "$schema": "../dynamic-compose-schema.json",
   "services": [
     {
-      "name": "meilisearch",
+      "name": "bar-assistant-meilisearch",
       "image": "getmeili/meilisearch:v1.12",
       "environment": {
         "MEILI_NO_ANALYTICS": "true",
@@ -44,7 +44,7 @@
       "dependsOn": ["meilisearch", "redis"]
     },
     {
-      "name": "salt-rim",
+      "name": "bar-assistant-salt-rim",
       "image": "barassistant/salt-rim:v4",
       "environment": {
         "API_URL": "$API_URL",
@@ -53,14 +53,14 @@
       "dependsOn": ["bar-assistant"]
     },
     {
-      "name": "webserver",
+      "name": "bar-assistant-webserver",
       "image": "nginx:alpine",
       "isMain": true,
       "internalPort": 3000,
       "volumes": [
         {
-          "hostPath": "${APP_DATA_DIR}/data/nginx/",
-          "containerPath": "/etc/nginx/conf.d/",
+          "hostPath": "${APP_DATA_DIR}/data/nginx/nginx.conf",
+          "containerPath": "/etc/nginx/conf.d/default.conf",
           "readOnly": true
         }
       ],
