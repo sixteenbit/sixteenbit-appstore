@@ -6,9 +6,12 @@
   "dynamic_config": true,
   "port": 34537,
   "id": "bar-assistant",
-  "tipi_version": 2,
-  "version": "v5.4.2",
-  "categories": ["utilities", "data"],
+  "tipi_version": 4,
+  "version": "v1.15",
+  "categories": [
+    "utilities",
+    "data"
+  ],
   "description": "Bar Assistant is an all-in-one solution for managing your home bar. It’s designed specifically for cocktail recipes, offering features like ingredient substitutes, ABV calculations, and more.",
   "short_desc": "Cocktail recipe manager and home bar assistant.",
   "author": "karlomikus",
@@ -22,7 +25,10 @@
       "env_variable": "MEILI_MASTER_KEY"
     }
   ],
-  "supported_architectures": ["arm64", "amd64"],
+  "supported_architectures": [
+    "arm64",
+    "amd64"
+  ],
   "created_at": 1745082405284,
-  "updated_at": 1745674974072
+  "updated_at": 1749525390030
 }
